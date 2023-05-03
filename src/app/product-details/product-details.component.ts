@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Product, products } from '../products';
+import { CartService } from '../cart.service';
 
 @Component({
   selector: 'app-product-details',
@@ -10,9 +11,15 @@ import { Product, products } from '../products';
 })
 export class ProductDetailsComponent implements OnInit {
   product: Product | undefined;
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private cartService: CartService
+  ) {}
+
   ngOnInit() {
     // First get the product id from the current route.
+    // To access the route parameters, we use route.snapshot, which is the ActivatedRouteSnapshot that contains information about the active route at that particular moment in time.
+    // The URL that matches the route provides the productId . Angular uses the productId to display the details for each unique product.
     const routeParams = this.route.snapshot.paramMap;
 
     // extract the productId from the route parameters and find the corresponding product in the products array
@@ -22,5 +29,10 @@ export class ProductDetailsComponent implements OnInit {
     this.product = products.find(
       (product) => product.id === productIdFromRoute
     );
+  }
+
+  addToCart(product: Product) {
+    this.cartService.addToCart(product);
+    window.alert('Your product has been added to the cart!');
   }
 }
