@@ -3,7 +3,11 @@
 <div *ngFor="let product of products">
   <!--With *ngFor, the <div> repeats for each product in the list.-->
   <h3>
-    <a [title]="product.name + ' details'">
+    <!-- The RouterLink directive helps you customize the anchor element. In this case, the route, or URL, contains one fixed segment, /products. The final segment is variable, inserting the id property of the current product. For example, the URL for a product with an id of 1 would be similar to https://getting-started-myfork.stackblitz.io/products/1. -->
+    <a
+      [title]="product.name + ' details'"
+      [routerLink]="['/products', product.id]"
+    >
       {{ product.name }}
       <!-- Interpolation {{ }} lets you render the property value as text. -->
     </a>
@@ -16,6 +20,8 @@
   </p>
 
   <button type="button" (click)="share()">Share</button>
+  <app-product-alerts [product]="product" (notify)="onNotify2()">
+  </app-product-alerts>
 </div>
 
 <!-- 
